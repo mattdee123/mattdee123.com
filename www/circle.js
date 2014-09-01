@@ -1,10 +1,16 @@
-var N_POINTS = 20
+var N_POINTS = 100
 var CIRCLE_THICKNESS = 10
 var LINE_THICKNESS = 1
 var SCROLL_RATE = 0.00005
-var MAX_SCROLL_RATIO = 10
+var MAX_SCROLL_RATIO = 15
 
-var circleData = {zoomNumber: 0, offset: {x:0, y:0}, lastPoint:{x:0, y:0}}
+var view = {
+    zoomNumber: 0,
+    offset: {x:0, y:0},
+    lastPoint:{x:0, y:0},
+    center:{x:0,y:0},
+    radius:1
+}
 
 var getCanvas = function() {return document.getElementById('circle-canvas')}
 
@@ -17,39 +23,44 @@ var updateCanvasSize = function() {
     var canvas = getCanvas()
     canvas.height = window.innerHeight - Math.floor(canvas.getBoundingClientRect().top)
     canvas.width = window.innerWidth
+    view.center = {x:canvas.width/2, y:canvas.height/2}
+    view.radius = (Math.min(canvas.height, canvas.width) / 2) * 0.8
     draw()
 }
 
 var scrollHandler = function(event) {
     if (!event.wheelDelta) return
-    circleData.zoomNumber = Math.min(Math.max(
-        circleData.zoomNumber + event.wheelDelta * SCROLL_RATE, -1), 1)
-    circleData.lastPoint = {x:event.layerX, y:event.layerY}
+    var oldRatio = zoomRatio(view.zoomNumber)
+    view.zoomNumber = Math.min(Math.max(
+        view.zoomNumber + event.wheelDelta * SCROLL_RATE, 0), 1)
+    view.lastPoint = {x:event.layerX, y:event.layerY}
+    var newRatio = zoomRatio(view.zoomNumber)
+    var change = newRatio/oldRatio
+    var dispX = (event.layerX - view.center.x) / newRatio
+    view.offset.x -= dispX * (change - 1)
     draw()
 }
 
 var zoomRatio = function(zoom) {
-    return Math.pow(MAX_SCROLL_RATIO, zoom)
+    return view.radius * Math.pow(MAX_SCROLL_RATIO, zoom)
 }
 
 var draw = function() {
     var canvas = getCanvas()
     var ctx = canvas.getContext("2d")
 
-    centerY = canvas.height / 2
-    centerX = canvas.width / 2
-    radius = (Math.min(canvas.height, canvas.width) / 2) * 0.8
-    zoom = zoomRatio(circleData.zoomNumber)
-    // console.log(zoom)
+    
+    zoom = zoomRatio(view.zoomNumber)
     ctx.clearRect(0,0,canvas.width, canvas.height)
     ctx.beginPath()
-    ctx.arc(circleData.lastPoint.x, circleData.lastPoint.y, 6, 0, 2*Math.PI)
+    ctx.arc(view.lastPoint.x, view.lastPoint.y, 6, 0, 2*Math.PI)
     ctx.fill()
     ctx.save()
-    ctx.translate(centerX + circleData.offset.x, centerY + circleData.offset.y)
-    ctx.scale(radius * zoom, radius * zoom)
-    drawCircle(ctx, CIRCLE_THICKNESS/radius/zoom)
-    drawLines(ctx, LINE_THICKNESS/radius/zoom, N_POINTS)
+    ctx.translate(view.center.x, view.center.y)
+    ctx.scale(zoom, zoom)
+    ctx.translate(view.offset.x, view.offset.y)
+    drawCircle(ctx, CIRCLE_THICKNESS/zoom)
+    drawLines(ctx, LINE_THICKNESS/zoom, N_POINTS)
     ctx.restore()
 }
 
@@ -58,7 +69,7 @@ var drawCircle = function(ctx, thickness) {
     ctx.strokeStyle = "rgb(70,70,250)"
     ctx.lineWidth = thickness
     ctx.beginPath()
-    ctx.arc(0,0,1,0,2*Math.PI)
+    ctx.arc(0, 0, 1, 0, 2*Math.PI)
     ctx.stroke()
 }
 
@@ -88,4 +99,3 @@ var pointOnCircle = function(percentageAround) {
 document.onscroll = scrollHandler
 window.onload = init
 window.onresize = updateCanvasSize
-console.log(window.onscroll)
