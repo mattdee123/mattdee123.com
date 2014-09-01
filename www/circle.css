@@ -11,7 +11,12 @@ body * {
 }
 
 h1 {
-    text-align: center
+    text-align: center;
+    margin: 10px
+}
+h2 {
+    text-align: center;
+    font-size: 75%;
 }
 
 #circle-canvas {

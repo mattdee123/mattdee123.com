@@ -1,4 +1,4 @@
-var N_POINTS = 100
+var N_POINTS = 50
 var CIRCLE_THICKNESS = 10
 var LINE_THICKNESS = 1
 var SCROLL_RATE = 0.00005
@@ -7,7 +7,6 @@ var MAX_SCROLL_RATIO = 15
 var view = {
     zoomNumber: 0,
     offset: {x:0, y:0},
-    lastPoint:{x:0, y:0},
     center:{x:0,y:0},
     radius:1
 }
@@ -31,13 +30,16 @@ var updateCanvasSize = function() {
 var scrollHandler = function(event) {
     if (!event.wheelDelta) return
     var oldRatio = zoomRatio(view.zoomNumber)
-    view.zoomNumber = Math.min(Math.max(
-        view.zoomNumber + event.wheelDelta * SCROLL_RATE, 0), 1)
-    view.lastPoint = {x:event.layerX, y:event.layerY}
+    view.zoomNumber = Math.max(
+        view.zoomNumber + event.wheelDelta * SCROLL_RATE, 0)
     var newRatio = zoomRatio(view.zoomNumber)
     var change = newRatio/oldRatio
+
     var dispX = (event.layerX - view.center.x) / newRatio
+    var dispY = (event.layerY - view.center.y) / newRatio
+
     view.offset.x -= dispX * (change - 1)
+    view.offset.y -= dispY * (change - 1)
     draw()
 }
 
@@ -53,7 +55,6 @@ var draw = function() {
     zoom = zoomRatio(view.zoomNumber)
     ctx.clearRect(0,0,canvas.width, canvas.height)
     ctx.beginPath()
-    ctx.arc(view.lastPoint.x, view.lastPoint.y, 6, 0, 2*Math.PI)
     ctx.fill()
     ctx.save()
     ctx.translate(view.center.x, view.center.y)
