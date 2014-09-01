@@ -70,10 +70,8 @@ var updateCanvasSize = function() {
 }
 
 var scrollHandler = function(event) {
-    console.log("SCROLL", event)
     // DeltaY is a firefox thing
     scroll = event.wheelDelta || event.deltaY*-100
-    console.log(scroll)
     if (!scroll) return
     var oldRatio = zoomRatio(view.zoomNumber)
     view.zoomNumber = Math.max(
