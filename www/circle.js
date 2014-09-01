@@ -33,7 +33,10 @@ var init = function() {
 
     updateCanvasSize()
     updateNumPoints(20)
+    // Most browsers
     canvas.addEventListener('mousewheel', scrollHandler, true)
+    // Firefox
+    canvas.addEventListener('wheel', scrollHandler, true)
     canvas.onmousedown = mouseDownHandler
     canvas.onmouseup = mouseUpHandler
 
@@ -67,13 +70,16 @@ var updateCanvasSize = function() {
 }
 
 var scrollHandler = function(event) {
-    if (!event.wheelDelta) return
+    console.log("SCROLL", event)
+    // DeltaY is a firefox thing
+    scroll = event.wheelDelta || event.deltaY*-100
+    console.log(scroll)
+    if (!scroll) return
     var oldRatio = zoomRatio(view.zoomNumber)
     view.zoomNumber = Math.max(
-        view.zoomNumber + event.wheelDelta * SCROLL_RATE, 0)
+        view.zoomNumber + scroll * SCROLL_RATE, 0)
     var newRatio = zoomRatio(view.zoomNumber)
     var change = newRatio/oldRatio
-
     var dispX = (event.layerX - view.center.x) / newRatio
     var dispY = (event.layerY - view.center.y) / newRatio
 
@@ -84,10 +90,17 @@ var scrollHandler = function(event) {
 }
 
 var mouseDownHandler = function(e) {
+    var lastX = e.layerX
+    var lastY = e.layerY
     getCanvas().onmousemove = function(event) {
         var zoom = zoomRatio(view.zoomNumber)
-        view.offset.x += event.movementX/zoom
-        view.offset.y += event.movementY/zoom
+        // console.log(event)
+        var x = event.layerX
+        var y = event.layerY
+        view.offset.x += (x - lastX)/zoom
+        view.offset.y += (y - lastY)/zoom
+        lastX = x
+        lastY = y
         draw()
     }
 }
