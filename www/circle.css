@@ -18,9 +18,15 @@ h2 {
     text-align: center;
     font-size: 75%;
 }
+#controls {
+    text-align: center;
+}
+
+#controls * {
+    display: inline;
+}
 
 #circle-canvas {
-    position:absolute;
     margin: 0; 
     padding: 0;
 }

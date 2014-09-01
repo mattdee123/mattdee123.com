@@ -1,4 +1,3 @@
-var N_POINTS = 50
 var CIRCLE_THICKNESS = 10
 var LINE_THICKNESS = 1
 var SCROLL_RATE = 0.00005
@@ -9,18 +8,53 @@ var view = {
     offset: {x:0, y:0},
     center:{x:0,y:0},
     radius:1,
-    canvas: null
+    canvas: null,
+    nPoints: 0,
+    input: null,
+    zoom: null
 }
 
 var getCanvas = function() {return view.canvas}
 
+var updateNumPoints = function(newValue) {
+    newValue = Math.max(newValue, 0)
+    view.nPoints = newValue
+    view.input.value = newValue
+    draw()
+}
+
 var init = function() {
     var canvas = document.getElementById('circle-canvas')
     view.canvas = canvas
+    var input = document.getElementById("input")
+    view.input = input
+    var zoom = document.getElementById("zoom")
+    view.zoom = zoom
+
     updateCanvasSize()
+    updateNumPoints(20)
     canvas.addEventListener('mousewheel', scrollHandler, true)
     canvas.onmousedown = mouseDownHandler
     canvas.onmouseup = mouseUpHandler
+
+    input.onkeypress = function(event) {
+        if (event.keyCode == 13) {
+
+            var val = parseInt(input.value)
+            if (isNaN(val) || val < 0) {
+                updateNumPoints(view.nPoints)
+                return
+            }
+            updateNumPoints(val)
+        }
+    }
+    document.getElementById("morePoints").onclick = function(){
+        updateNumPoints(view.nPoints + 1)
+    }
+    document.getElementById("lessPoints").onclick = function(){
+        updateNumPoints(view.nPoints - 1)
+    }
+
 }
 
 var updateCanvasSize = function() {
@@ -45,6 +79,7 @@ var scrollHandler = function(event) {
 
     view.offset.x -= dispX * (change - 1)
     view.offset.y -= dispY * (change - 1)
+    view.zoom.innerHTML = Math.round(newRatio * 100 / view.radius) + "%"
     draw()
 }
 
@@ -78,12 +113,11 @@ var draw = function() {
     ctx.scale(zoom, zoom)
     ctx.translate(view.offset.x, view.offset.y)
     drawCircle(ctx, CIRCLE_THICKNESS/zoom)
-    drawLines(ctx, LINE_THICKNESS/zoom, N_POINTS)
+    drawLines(ctx, LINE_THICKNESS/zoom, view.nPoints)
     ctx.restore()
 }
 
 var drawCircle = function(ctx, thickness) {
-    // Draw the circle
     ctx.strokeStyle = "rgb(70,70,250)"
     ctx.lineWidth = thickness
     ctx.beginPath()
@@ -98,14 +132,14 @@ var drawLines = function(ctx, thickness, nPoints) {
     points = new Array(nPoints)
     for (var i = 0; i < nPoints; i++) {
         points[i] = pointOnCircle(i/nPoints)
-    };
+    }
     ctx.beginPath()
     for (var i = 0; i < nPoints; i++) {
         for (var j = 0; j < nPoints; j++) {
             ctx.moveTo(points[i].x, points[i].y)
             ctx.lineTo(points[j].x, points[j].y)
-        };
-    };
+        }
+    }
     ctx.stroke()
 }
 
