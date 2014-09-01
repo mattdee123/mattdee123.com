@@ -8,14 +8,19 @@ var view = {
     zoomNumber: 0,
     offset: {x:0, y:0},
     center:{x:0,y:0},
-    radius:1
+    radius:1,
+    canvas: null
 }
 
-var getCanvas = function() {return document.getElementById('circle-canvas')}
+var getCanvas = function() {return view.canvas}
 
 var init = function() {
+    var canvas = document.getElementById('circle-canvas')
+    view.canvas = canvas
     updateCanvasSize()
-    getCanvas().addEventListener('mousewheel', scrollHandler, true)
+    canvas.addEventListener('mousewheel', scrollHandler, true)
+    canvas.onmousedown = mouseDownHandler
+    canvas.onmouseup = mouseUpHandler
 }
 
 var updateCanvasSize = function() {
@@ -43,6 +48,19 @@ var scrollHandler = function(event) {
     draw()
 }
 
+var mouseDownHandler = function(e) {
+    getCanvas().onmousemove = function(event) {
+        var zoom = zoomRatio(view.zoomNumber)
+        view.offset.x += event.movementX/zoom
+        view.offset.y += event.movementY/zoom
+        draw()
+    }
+}
+
+var mouseUpHandler = function(event) {
+    getCanvas().onmousemove = null
+}
+
 var zoomRatio = function(zoom) {
     return view.radius * Math.pow(MAX_SCROLL_RATIO, zoom)
 }
@@ -51,7 +69,6 @@ var draw = function() {
     var canvas = getCanvas()
     var ctx = canvas.getContext("2d")
 
-    
     zoom = zoomRatio(view.zoomNumber)
     ctx.clearRect(0,0,canvas.width, canvas.height)
     ctx.beginPath()
