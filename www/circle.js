@@ -39,6 +39,7 @@ var init = function() {
     canvas.addEventListener('wheel', scrollHandler, true)
     canvas.onmousedown = mouseDownHandler
     canvas.onmouseup = mouseUpHandler
+    canvas.onmouseout = mouseUpHandler
 
     input.onkeypress = function(event) {
         if (event.keyCode == 13) {
@@ -71,6 +72,7 @@ var updateCanvasSize = function() {
 
 var scrollHandler = function(event) {
     // DeltaY is a firefox thing
+    event.preventDefault()
     scroll = event.wheelDelta || event.deltaY*-100
     if (!scroll) return
     var oldRatio = zoomRatio(view.zoomNumber)
