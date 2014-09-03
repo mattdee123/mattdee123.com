@@ -41,23 +41,7 @@ var init = function() {
     canvas.onmouseup = mouseUpHandler
     canvas.onmouseout = mouseUpHandler
 
-    input.onkeypress = function(event) {
-        if (event.keyCode == 13) {
-
-            var val = parseInt(input.value)
-            if (isNaN(val) || val < 0) {
-                updateNumPoints(view.nPoints)
-                return
-            }
-            updateNumPoints(val)
-        }
-    }
-    document.getElementById("morePoints").onclick = function(){
-        updateNumPoints(view.nPoints + 1)
-    }
-    document.getElementById("lessPoints").onclick = function(){
-        updateNumPoints(view.nPoints - 1)
-    }
+    input.oninput = function() {updateNumPoints(input.value) }
 
 }
 
@@ -112,8 +96,21 @@ var mouseUpHandler = function(event) {
 var zoomRatio = function(zoom) {
     return view.radius * Math.pow(MAX_SCROLL_RATIO, zoom)
 }
+var drawQueued = false
 
 var draw = function() {
+    if (!drawQueued) {
+        drawQueued = true
+        setTimeout(function () {
+            drawQueued = false
+            actualDraw()
+        }, 10)
+
+    }
+
+}
+
+var actualDraw = function() {
     var canvas = getCanvas()
     var ctx = canvas.getContext("2d")
 
