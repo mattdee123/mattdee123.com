@@ -1,0 +1,71 @@
+<!-- THIS IS CLEARLY A TERRIBLE WAY TO MAKE A WEBSITE.  This is intended as a quick way to perform drawings on-screen -->
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Simple</title>
+</head>
+<body style="margin:0px; padding:0px">
+    <canvas id = "canvas" height="500" width="500" ></canvas>
+
+    <script type="text/javascript">
+        var ctx; // Make it global so that you can use it in the console
+        var scale;
+        var width = 10;
+
+        var draw = function() {
+            fillColor(0,0,200);
+            drawCircle(5,5,4,1);
+        }
+
+        // Template Code
+        var fillColor = function(r,g,b) {
+            fillStyle("rgb("+r+","+g+","+b+")")
+        }
+        var fillStyle = function(x) {
+            ctx.fillStyle = x
+        }
+        var strokeColor = function(r,g,b) {
+            strokeStyle("rgb("+r+","+g+","+b+")")
+        }
+        var strokeStyle = function(x) {
+            ctx.strokeStyle = x
+        }
+        var setWidth = function(x) {
+            width = x;
+            ctx.lineWidth = width/scale;
+        }
+        var drawCircle = function(x,y,r,fill) {
+            ctx.beginPath();
+            ctx.arc(x,y,r,0,2*Math.PI)
+            if (fill) {
+                ctx.fill();
+            } else {
+                ctx.stroke();
+            }
+        }
+
+        // Setup functions
+        var resize = function() {
+            canvas.height = window.innerHeight - Math.floor(canvas.getBoundingClientRect().top)
+            canvas.width = window.innerWidth
+            scale = Math.min(canvas.height, canvas.width)
+            ctx.translate((canvas.width - scale)/2, (canvas.height - scale) / 2)
+            ctx.scale(scale/10, scale/10);
+            ctx.lineWidth = width/scale;
+            draw();
+            
+        }
+        var initCanvas = function() {
+            var canvas = document.getElementById("canvas");
+            ctx = canvas.getContext("2d");
+            resize();
+        }
+        window.onresize = resize
+        window.onload = function() {
+            initCanvas();
+            draw();
+        }
+    </script>
+
+
+</body>
