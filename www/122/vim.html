@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Matt Dee" />
+  <title>Vim Basics</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="doc2.css" type="text/css" />
+</head>
+<body>
+<div id="header">
+<h1 class="title">Vim Basics</h1>
+<h2 class="author">Matt Dee</h2>
+</div>
+<h1 id="essential-vim-commands">Essential Vim Commands</h1>
+<p>This is my attempt at writing down some of the basic vim ideas that everyone who wants to be efficient with vim should know. It is NOT meant to be a full guide to using Vim. For that, or if you are interested in learning more, check out the <code>vimtutor</code> program that should be installed on any machine with vim.</p>
+<h2 id="modes">Modes</h2>
+<p>Vim's model for text editing is based on <strong>modes</strong>, which you switch between when you want to do a different task. The three major modes are:</p>
+<ul>
+<li>Normal Mode
+<ul>
+<li>This mode is what you will use when you are moving your cursor around the file and running commands (almost all of the commands below are for normal mode)</li>
+<li>Press <code>Esc</code> to leave any other mode and come back to normal mode</li>
+</ul></li>
+<li>Editing Mode
+<ul>
+<li>This mode will feel similar to other editors. You move the cursor around with the arrow keys and type words to add them to a file.</li>
+<li>See <strong>Editing</strong> to see how to get into this mode.</li>
+</ul></li>
+<li>Visual Select Mode
+<ul>
+<li>This mode is where you can select regions of the file to act on.</li>
+<li>Press <code>v</code> to enter visual mode, and move the selection with the normal movement keys</li>
+</ul></li>
+</ul>
+<h2 id="movement">Movement</h2>
+<ul>
+<li>One character: Arrow Keys or <code>h,j,k,l</code></li>
+<li>Start of line: <code>0</code></li>
+<li>End of line: <code>$</code></li>
+<li>Top of file: <code>gg</code></li>
+<li>Line number 122: <code>122G</code> or <code>:122 ↵</code></li>
+<li>End of file: <code>G</code></li>
+<li>Next word: <code>w</code></li>
+<li>Previous word: <code>b</code></li>
+</ul>
+<h2 id="editing-text">Editing Text</h2>
+<ul>
+<li>Insert before current character: <code>i</code></li>
+<li>Insert after current character: <code>a</code></li>
+<li>Insert at end of line: <code>A</code></li>
+<li>Undo: <code>u</code></li>
+<li>Redo: <code>Ctrl+r</code></li>
+</ul>
+<h2 id="copying-pasting">Copying &amp; Pasting</h2>
+<ul>
+<li>Copy (yank) selected area: <code>y</code></li>
+<li>Copy (yank) current line: <code>yy</code></li>
+<li>Cut selected area: <code>d</code></li>
+<li>Cut current line: <code>dd</code></li>
+<li>Paste: <code>p</code></li>
+</ul>
+<h2 id="file-operations">File Operations</h2>
+<ul>
+<li>Save: <code>:w ↵</code></li>
+<li>Quit: <code>:q! ↵</code></li>
+<li>Save and quit: <code>:wq ↵</code></li>
+<li>Open a different file or create new file: <code>:e otherfile.c0 ↵</code></li>
+<li>This can be really helpful if you want to copy text from one file, and then open a second file and paste text in there.</li>
+</ul>
+<h2 id="searching-replacing">Searching &amp; Replacing</h2>
+<ul>
+<li>Search for the string &quot;something&quot;: <code>/something ↵</code></li>
+<li>Go to the next occurence of search: <code>n</code></li>
+<li>Go to previous occurence of search: <code>N</code></li>
+<li>Replace &quot;foo&quot; with &quot;bar&quot; in whole file: <code>:%s/foo/bar/g ↵</code></li>
+<li>Replace &quot;foo&quot; with &quot;bar&quot; in current line/visual selection: <code>:s/foo/bar/g ↵</code></li>
+</ul>
+<h2 id="command-composition">Command Composition</h2>
+<p>This is a slightly more advanced idea in vim, but it is really one of the things that sets vim apart from other text editors, and makes it possible to automate things. I'll use the <code>d</code> (cut) command as an example, but most commands can be composed.</p>
+<ul>
+<li><strong>Operators and Movement</strong>: As you know from above, if I select a block of text (using visual mode) and press <code>d</code>, it will delete that area.
+<ul>
+<li>But what if I want to delete the rest of the line? <code>d$</code> will do that.</li>
+<li>How about delete from my cursor to the beginning of the line? <code>d0</code>.</li>
+<li>See a pattern? I can follow the command with a movement instruction to do that command to the region where I would have moved. What do you think <code>dG</code> will do?</li>
+</ul></li>
+<li><strong>Repetition</strong>: If you need to do the same thing multiple times, you can start a command with a number. For example, <code>10dd</code> will delete 10 lines. <code>10j</code> or <code>10+down_arrow</code> will move your cursor down 10 lines, etc.
+<ul>
+<li>Amazingly, this even works with inserting! type a number, press <code>i</code>, type text, and then press <code>Esc</code> to leave insert mode. Your insertions will be repeated that many times!</li>
+</ul></li>
+</ul>
+<h2 id="miscellaneous-operations">Miscellaneous Operations</h2>
+<ul>
+<li>Correctly indent a section of code: <code>=</code></li>
+<li>Format text into line-wrapped paragraph: <code>gq</code></li>
+<li>Increment next number: <code>Ctrl+a</code> (It even works with hex!)</li>
+<li>Decrement next number: <code>Ctrl+x</code></li>
+<li>Delete current character: <code>x</code></li>
+<li>Run terminal command: <code>:!command &amp;amp;</code>
+<ul>
+<li>Example: <code>:!cc0 -d -x coolfile.c0</code></li>
+<li>Don't leave your editor just to check your code!</li>
+</ul></li>
+</ul>
+<h2 id="vimrc-plugins">.vimrc + plugins</h2>
+<p>This is where you go when you feel like spending hours making your vim pretty! I'll just touch on these lightly, and if you are just getting started with vim, you can probably ignore all of this.</p>
+<h3 id="vimrc">.vimrc</h3>
+<ul>
+<li>Your <code>~/.vimrc</code> file is where all of your vim configuration happens -- like a <code>~/.bashrc</code> or <code>~/.cshrc</code> file, it contains commands to be run every time you start up vim.</li>
+<li>You should already have something in this file from the 15-122 setup. If you don't (ie., you don't get syntax highlighting in .c0 files), go to <a href="http://c0.typesafety.net/tutorial/Setting-up-your-environment.html">the setup page</a> and do that right now!</li>
+<li>There is a lot of configuring you can do here, and if you are ever annoyed by something in Vim, googling for the command to put in your <code>.vimrc</code> will work 90% of the time. My .vimrc file is <a href="https://bitbucket.org/mattdee123/dotfiles/raw/22657d7515e84c92684912e383b6894416958f44/default/.vimrc">here</a></li>
+<li>The one command I would highly reccomend adding is <code>set mouse=a</code>. This allows you to use the scrollwheel to navigate, click to move the cursor, and click and drag to do visual select!</li>
+</ul>
+<h3 id="plugins">Plugins</h3>
+<ul>
+<li>There are some cool plugins in vim. These are add-ons that you install by downloading their files and putting them into a directory located at <code>~/.vim</code>.</li>
+<li>I particularly like <a href="http://www.vim.org/scripts/script.php?script_id=1218">NERDCommenter</a>, which adds some commands for things like commenting out and uncommenting bits of code.</li>
+</ul>
+<p><br><br><br></p>
+<p>This file was generated from markdown using Pandoc. <a href="vim.md">Markdown file</a></p>
+</body>
+</html>
