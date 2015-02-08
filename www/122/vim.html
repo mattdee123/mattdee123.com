@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <meta name="author" content="Matt Dee" />
+  <meta name="author" content="By Matt Dee for 15-122" />
   <title>Vim Basics</title>
   <style type="text/css">code{white-space: pre;}</style>
   <link rel="stylesheet" href="doc2.css" type="text/css" />
@@ -12,10 +12,29 @@
 <body>
 <div id="header">
 <h1 class="title">Vim Basics</h1>
-<h2 class="author">Matt Dee</h2>
+<h2 class="author">By Matt Dee for 15-122</h2>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#essential-vim-commands">Essential Vim Commands</a><ul>
+<li><a href="#modes">Modes</a></li>
+<li><a href="#movement">Movement</a></li>
+<li><a href="#editing-text">Editing Text</a></li>
+<li><a href="#copying-pasting">Copying &amp; Pasting</a></li>
+<li><a href="#file-operations">File Operations</a></li>
+<li><a href="#searching-replacing">Searching &amp; Replacing</a></li>
+<li><a href="#command-composition">Command Composition</a></li>
+<li><a href="#miscellaneous-operations">Miscellaneous Operations</a></li>
+<li><a href="#macros">Macros</a></li>
+<li><a href="#vimrc-plugins">.vimrc + plugins</a><ul>
+<li><a href="#vimrc">.vimrc</a></li>
+<li><a href="#plugins">Plugins</a></li>
+</ul></li>
+</ul></li>
+</ul>
 </div>
 <h1 id="essential-vim-commands">Essential Vim Commands</h1>
-<p>This is my attempt at writing down some of the basic vim ideas that everyone who wants to be efficient with vim should know. It is NOT meant to be a full guide to using Vim. For that, or if you are interested in learning more, check out the <code>vimtutor</code> program that should be installed on any machine with vim.</p>
+<p>This is my attempt at writing down some of the basic vim ideas that everyone who wants to be efficient with vim should know. It is NOT meant to be a full guide to using Vim. For that, or if you are interested in learning more, check out the <code>vimtutor</code> program that should be installed on any machine with vim. 15-131 (GPI) also has an excellent <a href="https://www.cs.cmu.edu/~15131/labitations/vim-cheatsheet.pdf">cheat sheet</a>.</p>
 <h2 id="modes">Modes</h2>
 <p>Vim's model for text editing is based on <strong>modes</strong>, which you switch between when you want to do a different task. The three major modes are:</p>
 <ul>
@@ -73,8 +92,8 @@
 <h2 id="searching-replacing">Searching &amp; Replacing</h2>
 <ul>
 <li>Search for the string &quot;something&quot;: <code>/something ↵</code></li>
-<li>Go to the next occurence of search: <code>n</code></li>
-<li>Go to previous occurence of search: <code>N</code></li>
+<li>Go to the next occurrence of search: <code>n</code></li>
+<li>Go to previous occurrence of search: <code>N</code></li>
 <li>Replace &quot;foo&quot; with &quot;bar&quot; in whole file: <code>:%s/foo/bar/g ↵</code></li>
 <li>Replace &quot;foo&quot; with &quot;bar&quot; in current line/visual selection: <code>:s/foo/bar/g ↵</code></li>
 </ul>
@@ -99,12 +118,16 @@
 <li>Increment next number: <code>Ctrl+a</code> (It even works with hex!)</li>
 <li>Decrement next number: <code>Ctrl+x</code></li>
 <li>Delete current character: <code>x</code></li>
+<li>Run previous command again: <code>.</code></li>
 <li>Run terminal command: <code>:!command &amp;amp;</code>
 <ul>
 <li>Example: <code>:!cc0 -d -x coolfile.c0</code></li>
-<li>Don't leave your editor just to check your code!</li>
+<li>Don't leave your editor just to compile/run your code!</li>
 </ul></li>
 </ul>
+<h2 id="macros">Macros</h2>
+<p>A macro is a recording of a bunch of operations that you did. You can save a macro to be associated with any key.</p>
+<p>In order to record a macro to the <code>1</code> key, press <code>q1</code>. Now, you should see the word 'recording' at the bottom of the screen. Run the commands you want to record, and press <code>q</code> again to stop recording. You can now replay the macro with <code>@1</code>, or even run it 100 times with <code>100@1</code> (remember this from the command composition section?).</p>
 <h2 id="vimrc-plugins">.vimrc + plugins</h2>
 <p>This is where you go when you feel like spending hours making your vim pretty! I'll just touch on these lightly, and if you are just getting started with vim, you can probably ignore all of this.</p>
 <h3 id="vimrc">.vimrc</h3>
@@ -112,7 +135,7 @@
 <li>Your <code>~/.vimrc</code> file is where all of your vim configuration happens -- like a <code>~/.bashrc</code> or <code>~/.cshrc</code> file, it contains commands to be run every time you start up vim.</li>
 <li>You should already have something in this file from the 15-122 setup. If you don't (ie., you don't get syntax highlighting in .c0 files), go to <a href="http://c0.typesafety.net/tutorial/Setting-up-your-environment.html">the setup page</a> and do that right now!</li>
 <li>There is a lot of configuring you can do here, and if you are ever annoyed by something in Vim, googling for the command to put in your <code>.vimrc</code> will work 90% of the time. My .vimrc file is <a href="https://bitbucket.org/mattdee123/dotfiles/raw/22657d7515e84c92684912e383b6894416958f44/default/.vimrc">here</a></li>
-<li>The one command I would highly reccomend adding is <code>set mouse=a</code>. This allows you to use the scrollwheel to navigate, click to move the cursor, and click and drag to do visual select!</li>
+<li>The one command I would highly recommend adding is <code>set mouse=a</code>. This allows you to use the scroll-wheel to navigate, click to move the cursor, and click and drag to do visual select!</li>
 </ul>
 <h3 id="plugins">Plugins</h3>
 <ul>

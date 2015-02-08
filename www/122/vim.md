@@ -1,5 +1,5 @@
 % Vim Basics
-% Matt Dee
+% By Matt Dee for 15-122
 
 Essential Vim Commands
 ======================
@@ -104,9 +104,22 @@ Miscellaneous Operations
 * Increment next number: `Ctrl+a` (It even works with hex!)
 * Decrement next number: `Ctrl+x`
 * Delete current character: `x`
+* Run previous command again: `.`
 * Run terminal command: `:!command &amp;`
     - Example: `:!cc0 -d -x coolfile.c0`
-    - Don't leave your editor just to check your code!
+    - Don't leave your editor just to compile/run your code!
+
+Macros
+------
+A macro is a recording of a bunch of operations that you did.  You can save a
+macro to be associated with any key.
+
+In order to record a macro to the `1` key, press `q1`.  Now, you should see the
+word 'recording' at the bottom of the screen.  Run the commands you want to
+record, and press `q` again to stop recording.  You can now replay the macro
+with `@1`, or even run it 100 times with `100@1` (remember this from the command
+composition section?).
+
 
 .vimrc + plugins
 ----------------
