@@ -7,7 +7,8 @@ This is my attempt at writing down some of the basic vim ideas that everyone
 who wants to be efficient with vim should know.  It is NOT meant to be a full
 guide to using Vim.  For that, or if you are interested in learning more,
 check out the `vimtutor` program that should be installed on any machine with
-vim.
+vim.  15-131 (GPI) also has an excellent
+[cheat sheet](https://www.cs.cmu.edu/~15131/labitations/vim-cheatsheet.pdf).
 
 Modes
 -----
@@ -67,8 +68,8 @@ File Operations
 Searching & Replacing
 ---------------------
 * Search for the string "something": `/something ↵`
-* Go to the next occurence of search: `n`
-* Go to previous occurence of search: `N`
+* Go to the next occurrence of search: `n`
+* Go to previous occurrence of search: `N`
 * Replace "foo" with "bar" in whole file: `:%s/foo/bar/g ↵`
 * Replace "foo" with "bar" in current line/visual selection:
     `:s/foo/bar/g ↵`
@@ -125,8 +126,8 @@ you can probably ignore all of this.
   something in Vim, googling for the command to put in your `.vimrc` will work
   90% of the time.  My .vimrc file is
   [here](https://bitbucket.org/mattdee123/dotfiles/raw/22657d7515e84c92684912e383b6894416958f44/default/.vimrc)
-* The one command I would highly reccomend adding is `set mouse=a`.  This allows
-  you to use the scrollwheel to navigate, click to move the cursor, and click
+* The one command I would highly recommend adding is `set mouse=a`.  This allows
+  you to use the scroll-wheel to navigate, click to move the cursor, and click
   and drag to do visual select!
 
 ### Plugins
