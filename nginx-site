@@ -1,0 +1,67 @@
+server {
+    listen 443 ssl;
+    location ~ /.well-known {
+        root /home/mattdee/3566-root;
+        allow all;
+    }
+
+    location / {
+        proxy_pass http://localhost:3566;
+    }
+    server_name *.3566.me 3566.me;
+    ssl_certificate /etc/letsencrypt/live/3566.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/3566.me/privkey.pem;
+}
+server {
+    listen 443 ssl;
+
+    location ~ /.well-known {
+        allow all;
+    }
+
+    root /home/mattdee/mattdee123.com/www;
+    index index.html index.htm;
+
+    server_name *.mattdee123.com mattdee123.com .*mattdee.me mattdee.me;
+
+    ssl_certificate /etc/letsencrypt/live/mattdee123.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/mattdee123.com/privkey.pem;
+}
+
+server {
+    listen 80;
+    server_name mattdee123.com www.mattdee123.com 3566.me *.3566.me;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    location ~ /.well-known {
+        allow all;
+    }
+    server_name *.beforeweleavecmu.com beforeweleavecmu.com;
+
+    location / {
+        proxy_pass http://localhost:3566;
+    }
+
+    ssl_certificate /etc/letsencrypt/live/beforeweleavecmu.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/beforeweleavecmu.com/privkey.pem;
+}
+
+server {
+    listen 80;
+    server_name beforeweleavecmu.com www.beforeweleavecmu.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 8111;
+
+    location / {
+        proxy_pass http://24.3.16.238:8000;
+    }
+}
+server {
+    listen 80 default_server;
+}
